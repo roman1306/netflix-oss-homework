@@ -1,5 +1,5 @@
 ## Практическое задание по микросервисной архитектуре 
-###Часть I
+###Часть I. Netflix OSS
 
 1. Необходимо настроить **config-server** таким образом, чтобы все сервисы, использующие eureka для service-discovery могли доступиться к нему по порту 8282.
 Менять опцию `server.port: 8989` в **bootstrap.yml** проекта **eureka-server** запрещено.
@@ -32,3 +32,15 @@ http://localhost:9092/employees/0000001
 http://localhost:9094/workspaces-api/workspaces/0000001
 http://localhost:9094/employees-api/employees/0000001
 ```
+
+###Часть II. ELK
+1. Поднимите локально ELK стек. Для этого можно использовать docker-compose и взять за основу проект https://github.com/deviantony/docker-elk
+```
+docker-compose up -d # поднимет локально logstash/elasticsearch/kibana
+```
+2. Подключите к приложению зависимости logback, logstash-logback-encoder, spring-cloud-sleuth
+3. Настройте appender для отпарвки логов в logstash (в используемом выше docker-compose.yml по-умолчанию logstash поднимается на порту 5000)
+4. Поднимите приложения и убедитесь, что логи пишутся через logstash в elasticsearch, подключившись к последнему через интерфейс Kibana (по-умолчанию поднимается на порту 5601). Настройте через Kibana индекс, как это было показано на демонстрации во время вебинара
+5. Измение конфигурацию logstash таким образом, чтобы все поля логов индексировались в elasticsearch и по ним в последствии можно было производить поиск в Kibana
+6. Убедитесь, что цепочки вызовов **employees-api** -> **workspaces-api** можно проследить в Kibana по HTTP заголовкам `X-B3-TraceId` и `X-B3-SpanId` (см. spring-cloud-sleuth)
+7. В Kibana создайте по настроенному ранее индексу Area chart, который позволит мониторить количество вызовов в едииницу времени
