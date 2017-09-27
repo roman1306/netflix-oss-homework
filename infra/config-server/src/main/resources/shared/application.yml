@@ -1,3 +1,0 @@
-hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 5000
-
-# You should add something here. Some common eureka-client options, right? Eureka runs on localhost:8989
