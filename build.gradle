@@ -1,8 +1,8 @@
 buildscript {
 	ext {
-		dependencyManagementPluginVersion = '0.6.1.RELEASE'
-		springBootVersion = '1.3.6.RELEASE'
-		springCloudBomVersion = 'Brixton.SR7'
+		dependencyManagementPluginVersion = '1.0.7.RELEASE'
+		springBootVersion = '2.1.4.RELEASE'
+		springCloudBomVersion = 'Greenwich.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -20,12 +20,12 @@ subprojects {
 	apply plugin: 'groovy'
 	apply plugin: 'idea'
 	apply plugin: 'eclipse'
-	apply plugin: 'spring-boot'
+	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 	apply from: "${rootProject.projectDir}/libraries.gradle"
 
 	task wrapper(type: Wrapper) {
-		gradleVersion = '2.14'
+		gradleVersion = '4.10.2'
 	}
 
 	sourceCompatibility = 1.8
