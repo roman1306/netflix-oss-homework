@@ -1,0 +1,7 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8282/eureka
+
+server:
+  port: 9092
