@@ -2,6 +2,8 @@ package com.epam.hw.netflix.controllers
 
 import com.epam.hw.netflix.api.WorkspaceAPI
 import com.epam.hw.netflix.services.EmployeeService
+import com.epam.hw.netflix.services.WorkspaceService
+import com.netflix.hystrix.HystrixCommand
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PathVariable
@@ -16,7 +18,7 @@ class EmployeeAPIController {
     EmployeeService employeeService
 
     @Autowired
-    WorkspaceAPI workspaceAPIClient
+    WorkspaceService workspaceService
 
     @RequestMapping("/{id}")
     def describeEmployee(@PathVariable("id") String id) {
@@ -27,7 +29,7 @@ class EmployeeAPIController {
                 firstName: employee.firstName,
                 lastName : employee.lastName,
                 email    : employee.email,
-                workspace: workspaceAPIClient.getWorkspaceById(id) // null? Nope. Let's request exact workspace by employee.workspaceId from workspaces-api. How? With feign client maybe?
+                workspace: workspaceService.getWorkspaceById(id) // null? Nope. Let's request exact workspace by employee.workspaceId from workspaces-api. How? With feign client maybe?
         ]
     }
 }
