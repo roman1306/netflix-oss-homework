@@ -3,10 +3,9 @@ spring:
     name: config
   cloud:
     config:
-      server: classpath:/config
-
-  profiles:
-    active: native
+      server:
+        git:
+          uri: https://github.com/roman1306/configuration-netflix-oss-homework.git
 
 server:
   port: ${CONFIG_PORT:8888}
