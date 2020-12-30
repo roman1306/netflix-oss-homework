@@ -1,0 +1,75 @@
+version: '3.1'
+
+services:
+  config-service:
+    container_name: config-service
+    image: config-server
+    build: infra/config-server
+    ports:
+    - "8888:8888"
+
+  eureka-service:
+    container_name: eureka-service
+    image: eureka-server
+    build: infra/eureka-server
+    ports:
+    - "8282:8282"
+    environment:
+      - CONFIG_HOST=config-service
+    depends_on:
+      - config-service
+
+  workspaces-service-90:
+    container_name: workspaces-service-90
+    image: workspaces-service
+    build: business-services/workspaces-api
+    ports:
+    - "9090:9090"
+    environment:
+      - CONFIG_HOST=config-service
+      - SERVER_PORT=9090
+    depends_on:
+      - config-service
+      - eureka-service
+
+  workspaces-service-91:
+    container_name: workspaces-service-91
+    image: workspaces-service
+    ports:
+      - "9091:9091"
+    environment:
+      - CONFIG_HOST=config-service
+      - SERVER_PORT=9091
+    depends_on:
+      - config-service
+      - eureka-service
+      - workspaces-service-90
+
+  employees-service:
+    container_name: employees-service
+    image: employees-service
+    build: business-services/employees-api
+    ports:
+    - "9092:9092"
+    environment:
+      - CONFIG_HOST=config-service
+    depends_on:
+      - config-service
+      - eureka-service
+      - workspaces-service-90
+      - workspaces-service-91
+
+  gateway-service:
+    container_name: gateway-service
+    image: gateway-service
+    build: infra/api-gateway
+    ports:
+    - "9094:9094"
+    environment:
+      - CONFIG_HOST=config-service
+    depends_on:
+      - config-service
+      - eureka-service
+      - workspaces-service-91
+      - workspaces-service-90
+      - employees-service
